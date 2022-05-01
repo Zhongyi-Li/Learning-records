@@ -26,5 +26,15 @@ const isString = isTyping('String')
 console.log(isString('abc'));
 console.log(isString(123));
 
-//作业 sum(1,2,3,4,5) => sum(1)(2)(3)(4)(5) 实现一个通用的柯里化函数
+//作业 add(1,2,3) => add(1)(2)(3) 实现一个通用的柯里化函数
+
+function add(num){
+    let r = num;
+    return (num)=>{
+        r+=num
+        return ()=>{
+            return r+=num
+        }
+    }
+}
 
