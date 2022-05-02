@@ -1,0 +1,50 @@
+<!--
+ * @Author: your name
+ * @Date: 2022-05-02 17:37:02
+ * @LastEditTime: 2022-05-02 17:49:24
+ * @LastEditors: your name
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: \test\Vue\nextTick.html
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   <!-- 
+       nextTick 防止频繁更新，Vue多次更新数据 最终会进行批量处理更新。内部nextTick实现了延迟更新
+       用户自定义nextTick中的回调会在DOM更新结束后执行，从而可以获取到更新后的DOM
+    -->
+    <script>
+        //以下实现源码中的主要逻辑
+        let cbs = []
+        let peding = false
+
+        function flushCallacks(){
+            if(!peding){
+                peding = true
+              cbs.forEach(h => h())
+            }
+        }
+        function nextTick(cb){
+            cbs.push(cb)
+            Promise.resolve().then(flushCallacks)   //也可以是MutationObserver setIimeout setImmediate
+         }
+        
+        function render(){
+            console.log('渲染');
+        }
+        nextTick(render)
+        nextTick(render)
+        nextTick(render)
+        //需实现 nextTick回调要在 数据更新后执行
+        console.log('数据更新');
+        console.log('数据更新');
+    </script>
+</body>
+</html>
